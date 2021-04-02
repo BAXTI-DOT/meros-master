@@ -1,0 +1,132 @@
+const model = require('./model')
+
+module.exports = {
+	Query: {
+		categories: async() => {
+			try {
+				const categories = await model.categories()
+				return categories
+			}
+			catch(error) {
+				throw error
+			}
+		},
+		category: async(_, { categoryId }) => {
+			try {
+				const category = await model.byID(categoryId)
+				return category
+			}
+			catch(error) {
+				throw error
+			}
+		},
+		categoryName: async(_, { categoryId }) => {
+			try {
+				const { category_name } = await model.name(categoryId)
+				return category_name
+			}
+			catch(error) {
+				throw error
+			}
+		},
+		categoryCount: async(_, { categoryId }) => {
+			try {
+				const { count } = await model.productCount(categoryId)
+				return count
+			}
+			catch(error) {
+				throw error
+			}
+		},
+		newProducts: async(_, { categoryId }) => {
+			try {
+				const newProducts = await model.newProducts(categoryId)
+				return newProducts
+			}
+			catch(error) {
+				throw error
+			}
+ 		},
+ 		giftProducts: async(_, { categoryId }) => {
+			try {
+				const giftProducts = await model.giftProducts(categoryId)
+				return giftProducts
+			}
+			catch(error) {
+				throw error
+			}
+ 		},
+ 		newProductTitle: async(_, { categoryId }) => {
+ 			try {
+ 				const title = await model.newProductTitle(categoryId)
+ 				return title
+ 			}
+ 			catch(error) {
+ 				throw error
+ 			}
+ 		},
+ 		giftProductTitle: async(_, { categoryId }) => {
+ 			try {
+ 				const title = await model.giftProductTitle(categoryId)
+ 				return title
+ 			}
+ 			catch(error) {
+ 				throw error
+ 			}
+ 		}
+	},
+	Mutation: {
+		addCategory: async(_, { categoryName }) => {
+			try {
+				const newCategory = await model.addCategory(categoryName)
+
+				if(newCategory) {
+					return {
+						status: "200",
+						message: "New category has been addded!!"
+					}
+				}
+				else throw "Error while adding category!!"
+			}	
+			catch(error) {
+				return {
+					status: "ERROR",
+					message: new Error(error).message || error
+				}
+			}
+		},
+		deleteCategory: async(_, { categoryID }) => {
+			try {
+				const deletedCategory = await model.deleteCategory(categoryID)
+
+				if(deletedCategory) {
+					return {
+						status: "200",
+						message: "The category has successfully been deleted!!"
+					}
+				}
+				else throw "Error while deleting category"
+			}
+			catch(error) {
+				return {
+					status: "ERROR",
+					message: new Error(error).message || error
+				}
+			}
+		}
+	},
+	Categories: {
+		id: 	global => global.category_id,
+		name: 	global => global.category_name,
+	},
+	Products: {
+		id: 				global => global.product_id,
+		name: 				global => global.product_name,
+		price: 				global => global.product_price,
+		subcategoryName: 	global => global.subcategory_name
+	},
+	Title: {
+		id: 	global => global.title_id,
+		name: 	global => global.title_name
+	}
+}

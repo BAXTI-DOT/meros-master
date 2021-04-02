@@ -1,0 +1,29 @@
+{
+  "name": "meros-master",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./src/server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BAXTI-DOT/meros-master.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BAXTI-DOT/meros-master/issues"
+  },
+  "homepage": "https://github.com/BAXTI-DOT/meros-master#readme",
+  "dependencies": {
+    "apollo-server-express": "^2.22.2",
+    "bcrypt": "^5.0.1",
+    "express": "^4.17.1",
+    "graphql": "^15.5.0",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^8.5.1"
+  }
+}
