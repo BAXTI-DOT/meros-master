@@ -16,17 +16,18 @@ module.exports = {
 				const allRows  = await registerModel.allUser(args.name, args.number)
 				const selectRows = await registerModel.selectUsers()
 
-				const filter = selectRows.find(e => e.phone_number === args.number)
+				const filter = selectRows.find(e => e.user_number === args.number)
 
-				// Checking validity of number
 				if(allRows.length !== 0 || filter) {
 					return new Error("User has already been registered")
 				}
 
+				// Checking validity of number
 				if(args.number.length !== 13) {
 					return new Error("Missing number")
 				}
 
+				// Checking validity of number
 				if(isNaN(args.number)) {
 					return new Error("Not valid phone number")
 				}
@@ -42,7 +43,7 @@ module.exports = {
 
 				// signing token
 				if(newUser) {
-					const generate = jwt.sign(newUser.registered_users_id, newUser.phone_number)
+					const generate = jwt.sign(newUser.user_id, newUser.user_number)
 					return generate
 				}
 

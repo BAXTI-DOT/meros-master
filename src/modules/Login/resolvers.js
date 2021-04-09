@@ -33,7 +33,7 @@ module.exports = {
 				}
 
 				// signing token
-				return jwt.sign( rows[0].registered_users_id, number)
+				return jwt.sign(rows[0].user_id, number)
 
 			}
 			catch(e) {

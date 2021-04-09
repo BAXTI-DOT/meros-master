@@ -23,7 +23,6 @@ const ADD_CATEGORY = `
 		($1)
 	RETURNING
 		category_id
-
 `
 
 const DELETE_CATEGORY = `

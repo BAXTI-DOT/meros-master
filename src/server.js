@@ -34,7 +34,7 @@ const server = new ApolloServer({
 		onConnect: (connectionParams, webSocket, context) => {
 			if (connectionParams) {
 				return {
-					token: connectionParams.authToken
+					token: connectionParams.token
 				}
 			}
 		},

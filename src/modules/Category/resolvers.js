@@ -113,6 +113,9 @@ module.exports = {
 					message: new Error(error).message || error
 				}
 			}
+		},
+		addNewProduct: async(_, { productID }) => {
+			
 		}
 	},
 	Categories: {
@@ -120,10 +123,10 @@ module.exports = {
 		name: 	global => global.category_name,
 	},
 	Products: {
-		id: 				global => global.product_id,
-		name: 				global => global.product_name,
-		price: 				global => global.product_price,
-		subcategoryName: 	global => global.subcategory_name
+		id: 			global => global.product_id,
+		name: 			global => global.product_name,
+		price: 			global => global.product_price,
+		subcategory: 	global => global.subcategory_name
 	},
 	Title: {
 		id: 	global => global.title_id,

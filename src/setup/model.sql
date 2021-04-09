@@ -11,6 +11,13 @@ CREATE TABLE sub_categories(
 	category_id uuid not null references categories (category_id)
 );
 
+CREATE TABLE sub_classes(
+	subclass_id uuid default uuid_generate_v4() not null primary key,
+	subclass_name character varying(128) not null,
+	subcategory_id uuid not null references sub_categories (subcategory_id),
+	category_id uuid not null references categories (category_id)
+);
+
 CREATE TABLE products (
 	product_id uuid default uuid_generate_v4() not null primary key,
 	product_name character varying(128) not null,
@@ -28,13 +35,6 @@ CREATE TABLE users (
 );
 
 create unique index main_contact on users(user_number);
-
-CREATE TABLE korzinka(
-	korzinka_id uuid default uuid_generate_v4() not null primary key,
-	product_id uuid not null references products (product_id),
-	product_count bigint not null default 1,
-	user_id uuid not null references users (user_id)
-);
 
 CREATE TABLE forwards(
 	forward_id uuid default uuid_generate_v4() not null primary key,
@@ -62,4 +62,32 @@ CREATE TABLE gift_products_title (
 	title_id uuid default uuid_generate_v4() not null primary key,
 	title_name character varying(128) not null,
 	category_id uuid not null references categories (category_id)
+);
+
+CREATE TABLE best_offers (
+	bestoffer_id uuid default uuid_generate_v4() not null primary key,
+	product_id uuid not null references products(product_id)
+);
+
+CREATE TABLE recommended_products (
+	recommended_id uuid default uuid_generate_v4() not null primary key,
+	product_id uuid not null references products(product_id)
+);
+
+CREATE TABLE cart(
+	cart_id uuid default uuid_generate_v4() not null primary key,
+	product_id uuid not null references products (product_id),
+	product_count int not null,
+	user_id uuid not null references users (user_id)
+);
+
+CREATE TABLE states(
+	state_id uuid default uuid_generate_v4() not null primary key,
+	state_name character varying(128) not null
+);
+
+CREATE TABLE regions(
+	region_id uuid default uuid_generate_v4() not null primary key,
+	region_name character varying(128) not null,
+	state_id uuid not null references states (state_id)
 );

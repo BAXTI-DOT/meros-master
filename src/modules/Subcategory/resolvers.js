@@ -19,6 +19,42 @@ module.exports = {
 			catch(error) {
 				throw error
 			}
+		},
+		subcategoryName: async(_, { subcategoryID }) => {
+			try {
+				const { subcategory_name: name} = await model.name(subcategoryID)
+				return name
+			}
+			catch(error) {
+				throw error
+			}
+		},
+		subcategoryProducts: async(_, { subcategoryID, sortStatus, page, limit }) => {
+			try {	
+				const products = await model.sortedProducts(subcategoryID, sortStatus, page, limit)
+				return products
+			}
+			catch(error) {
+				throw error
+			}
+		},
+		subClasses: async(_, { subcategoryID }) => {
+			try {
+				const subClasses = await model.subClasses(subcategoryID)
+				return subClasses
+			}
+			catch(error) {
+				throw error
+			}
+		},
+		subcategoryLink: async(_, { subcategoryID }) => {
+			try {
+				const linkName = await model.linkName(subcategoryID)
+				return linkName
+			}
+			catch(error) {
+				throw error
+			}
 		}
 	},
 	Mutation: {
@@ -64,5 +100,20 @@ module.exports = {
 	Subcategories: {
 		id: 	global => global.subcategory_id,
 		name: 	global => global.subcategory_name
+	},
+	SubClasses: {
+		id: 	global => global.subclass_id,
+		name: 	global => global.subclass_name
+	},
+	LinkSubcategory: {
+		id: 			global => global.subcategory_id,
+		category: 		global => global.category_name,
+		subcategory: 	global => global.subcategory_name
+	},
+	SubcategoryProducts: {
+		id: 		global => global.product_id,
+		name: 		global => global.product_name,
+		price: 		global => global.product_price,
+		category: 	global => global.category_name
 	}
 }
