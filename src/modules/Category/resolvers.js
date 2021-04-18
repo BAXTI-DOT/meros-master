@@ -1,4 +1,6 @@
 const model = require('./model')
+const pubsub = require('../../pubsub')
+const CATEGORY = 'CATEGORY'
 
 module.exports = {
 	Query: {
@@ -78,15 +80,21 @@ module.exports = {
 	Mutation: {
 		addCategory: async(_, { categoryName }) => {
 			try {
-				const newCategory = await model.addCategory(categoryName)
+				if(categoryName) {
+					const newCategory = await model.addCategory(categoryName)
+					pubsub.publish(CATEGORY)
 
-				if(newCategory) {
-					return {
-						status: "200",
-						message: "New category has been addded!!"
+					if(newCategory) {
+						return {
+							status: "200",
+							message: "New category has been addded!!"
+						}
 					}
+					else throw "Error while adding category!!"
 				}
-				else throw "Error while adding category!!"
+				else {
+					throw "categoryname was not provided"
+				}
 			}	
 			catch(error) {
 				return {
@@ -98,6 +106,7 @@ module.exports = {
 		deleteCategory: async(_, { categoryID }) => {
 			try {
 				const deletedCategory = await model.deleteCategory(categoryID)
+				pubsub.publish(CATEGORY)
 
 				if(deletedCategory) {
 					return {
@@ -114,8 +123,24 @@ module.exports = {
 				}
 			}
 		},
-		addNewProduct: async(_, { productID }) => {
-			
+		updateCategory: async(_, { categoryID, categoryName }) => {
+			try {
+				const updatedCategory = await model.updateCategory(categoryName, categoryID)
+
+				if(updatedCategory) {
+					return {
+						status: "200",
+						message: "The category has successfully been updated!!"
+					}
+				}
+				else throw "Error while updating category"
+			}
+			catch(error) {
+				return {
+					status: "ERROR",
+					message: new Error(error).message || error
+				}
+			}
 		}
 	},
 	Categories: {
@@ -131,5 +156,19 @@ module.exports = {
 	Title: {
 		id: 	global => global.title_id,
 		name: 	global => global.title_name
+	},
+	Subscription: {
+		categories: {
+			resolve: async(payload, args) => {
+				try {
+					const categories = await model.categories()
+					return categories
+				}
+				catch(error) {
+					throw error
+				}
+			},
+			subscribe: () => pubsub.asyncIterator([CATEGORY])
+		}
 	}
 }

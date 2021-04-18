@@ -237,3 +237,89 @@ VALUES('Shayxontohur', 'bbac33cb-33f8-4d84-a789-0a491e880056'),
 	  ('Vobkent', 'a01bc32b-2f5b-4f37-a050-d5029ba7cc73'),
 	  ('Rometan', 'a01bc32b-2f5b-4f37-a050-d5029ba7cc73'),
 	  ('Olot', 'a01bc32b-2f5b-4f37-a050-d5029ba7cc73');
+
+INSERT INTO comments(
+	comment_body,
+	comment_rate,
+	product_id,
+	user_id,
+	created_at
+)
+
+VALUES('Yaxshi maxsulotlar', 3, 'e59bb5a1-907b-4c31-85ff-1100108b3882', '0de664e5-1fcf-49a3-a853-24f7df51c333', 'Fri Apr 09 2021 23:16:46 GMT+0500 (Uzbekistan Standard Time)');
+
+INSERT INTO navbar(
+	category_id
+)
+
+VALUES('e11d9387-3161-48ac-b182-edbc8b90548f');
+
+INSERT INTO subcategory_menu(
+	subcategory_id,
+	category_id
+)
+
+VALUES('272a6f72-e7dd-4912-b131-1d4a769501e5', 'e11d9387-3161-48ac-b182-edbc8b90548f');
+
+INSERT INTO filters_main(
+	filtermain_title, 
+	subcategory_id
+)
+
+VALUES('Nashr', '272a6f72-e7dd-4912-b131-1d4a769501e5'),
+	  ('Nashr', '097ccc14-6d5b-442d-8feb-4b8281e4461f'),
+	  ('Muallif', '272a6f72-e7dd-4912-b131-1d4a769501e5'),
+	  ('Muallif', '097ccc14-6d5b-442d-8feb-4b8281e4461f'),
+	  ('Til', '272a6f72-e7dd-4912-b131-1d4a769501e5'),
+	  ('Til', '097ccc14-6d5b-442d-8feb-4b8281e4461f'),
+	  ('Mavsum', 'ba5f0f3d-a315-4c77-9544-9239399fd746'),
+	  ('Brend', 'ba5f0f3d-a315-4c77-9544-9239399fd746'),
+	  ('Mavsum', '3dd20acf-19e1-4cf2-b70e-57a994efd20e'),
+	  ('Brend', '3dd20acf-19e1-4cf2-b70e-57a994efd20e'),
+	  ('Mavsum', '29cb5eb1-9ed5-47d3-9e67-c18dac304d9e'),
+	  ('Brend', '29cb5eb1-9ed5-47d3-9e67-c18dac304d9e');
+
+INSERT INTO filter_details (
+	filterdetail_title, 
+	filtermain_id
+)
+
+VALUES('Hilol', '8ecdfe7f-6b91-47ec-b24b-8f48a2bb1d21'),
+	  ('Hilol', 'eedc655b-3c2e-4af0-939a-7b8b53a117fd'),
+	  ('Sharq', '8ecdfe7f-6b91-47ec-b24b-8f48a2bb1d21'),
+	  ('Sharq', 'eedc655b-3c2e-4af0-939a-7b8b53a117fd'),
+	  ('Yangi asr avlodi', '8ecdfe7f-6b91-47ec-b24b-8f48a2bb1d21'),
+	  ('Yangi asr avlodi', 'eedc655b-3c2e-4af0-939a-7b8b53a117fd'),
+	  ('Abdukarim Mirzayev', '65581809-d0a1-4c06-b5be-d9a8a83f9d13'),
+	  ('Abdukarim Mirzayev', '087b1c52-a1b4-4371-8d42-98daba594712'),
+	  ('Aziz Axrorov', '65581809-d0a1-4c06-b5be-d9a8a83f9d13'),
+	  ('Aziz Axrorov', '087b1c52-a1b4-4371-8d42-98daba594712'),
+	  ('Abdulla Avloniy', '65581809-d0a1-4c06-b5be-d9a8a83f9d13'),
+	  ('Abdulla Avloniy', '087b1c52-a1b4-4371-8d42-98daba594712'),
+	  ('Ingliz', '49904640-acde-4e83-b15f-52faabd44607'),
+	  ('Ingliz', '8be23d5b-ef9d-4f87-9ebc-e17a81a5018c'),
+	  ('Rus', '49904640-acde-4e83-b15f-52faabd44607'),
+	  ('Rus', '8be23d5b-ef9d-4f87-9ebc-e17a81a5018c'),
+	  ('O`zbek', '49904640-acde-4e83-b15f-52faabd44607'),
+	  ('O`zbek', '8be23d5b-ef9d-4f87-9ebc-e17a81a5018c'),
+	  ('Qish', '8a691518-227c-435b-8187-55ffbbe17bcb'),
+	  ('Bahor', '8a691518-227c-435b-8187-55ffbbe17bcb'),
+	  ('Yoz', '8a691518-227c-435b-8187-55ffbbe17bcb'),
+	  ('Kuz', '8a691518-227c-435b-8187-55ffbbe17bcb'),
+	  ('Adidas', 'cb370d04-df3e-4f30-93b3-01e0bb5e7df5'),
+	  ('Nike', 'cb370d04-df3e-4f30-93b3-01e0bb5e7df5'),
+	  ('Puma', 'cb370d04-df3e-4f30-93b3-01e0bb5e7df5'),
+	  ('Qish', '018810ab-268e-450f-a2d6-caecabba6424'),
+	  ('Bahor', '018810ab-268e-450f-a2d6-caecabba6424'),
+	  ('Yoz', '018810ab-268e-450f-a2d6-caecabba6424'),
+	  ('Kuz', '018810ab-268e-450f-a2d6-caecabba6424'),
+	  ('Nike', 'f0d48721-a2d9-48fb-a9e5-51e27427b01e'),
+	  ('Polo', 'f0d48721-a2d9-48fb-a9e5-51e27427b01e'),
+	  ('Gucci', 'f0d48721-a2d9-48fb-a9e5-51e27427b01e'),
+	  ('Qish', '5b4b0b01-d171-47ce-9b00-6b3d4bb06ab8'),
+	  ('Bahor', '5b4b0b01-d171-47ce-9b00-6b3d4bb06ab8'),
+	  ('Yoz', '5b4b0b01-d171-47ce-9b00-6b3d4bb06ab8'),
+	  ('Kuz', '5b4b0b01-d171-47ce-9b00-6b3d4bb06ab8'),
+	  ('Jonsons Baby', '7982fdcb-07b9-4f8a-8ee1-0f6982bf3978'),
+	  ('Adidas', '7982fdcb-07b9-4f8a-8ee1-0f6982bf3978'),
+	  ('Nike', '7982fdcb-07b9-4f8a-8ee1-0f6982bf3978');

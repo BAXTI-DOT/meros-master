@@ -113,10 +113,22 @@ const GIFT_PRODUCT_TITLE = `
 		category_id = $1
 `
 
+const UPDATE_CATEGORY = `
+	UPDATE 
+		categories
+	SET
+		category_name = $1
+	WHERE
+		category_id = $2
+	RETURNING
+		category_id
+`
+
 const categories 	 	= () 			=> fetchAll(CATEGORIES)
 const byID		 	 	= (categoryID) 	=> fetch(BY_ID, categoryID)
 const addCategory 	 	= (name) 		=> fetch(ADD_CATEGORY, name)
 const deleteCategory 	= (categoryID) 	=> fetch(DELETE_CATEGORY, categoryID)
+const updateCategory 	= (categoryID, categoryName) 	=> fetch(UPDATE_CATEGORY, categoryName, categoryID)
 const name 			 	= (categoryID) 	=> fetch(CATEGORY_NAME, categoryID)
 const productCount 	 	= (categoryID) 	=> fetch(PRODUCT_COUNT, categoryID)
 const newProducts 	 	= (categoryID) 	=> fetchAll(NEW_PRODUCTS, categoryID)
@@ -135,5 +147,6 @@ module.exports = {
 	newProducts,
 	giftProducts,
 	newProductTitle,
-	giftProductTitle
+	giftProductTitle,
+	updateCategory
 }

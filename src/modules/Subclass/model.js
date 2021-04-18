@@ -16,7 +16,19 @@ const BY_ID = `
 	FROM
 		sub_classes
 	WHERE
-		subcategory_id = $1
+		category_id = $1
+	AND
+		subcategory_id = $2
+`
+
+const BY_CATEGORY_ID = `
+	SELECT
+		subclass_id,
+		subclass_name
+	FROM
+		sub_classes
+	WHERE
+		category_id = $1
 `
 
 const ADD_SUB_CLASS = `
@@ -116,12 +128,13 @@ const UNSORTED_PRODUCTS = `
 `
 
 const all				= () 									=> fetchAll(ALL_SUB_CLASSES)
-const byID 				= (subcategoryID) 						=> fetchAll(BY_ID, subcategoryID)
+const byID 				= (categoryID, subcategoryID) 			=> fetchAll(BY_ID, categoryID, subcategoryID)
 const addSubClass 		= (name, subcategoryID, categoryID) 	=> fetch(ADD_SUB_CLASS, name, subcategoryID, categoryID)
 const deleteSubclass 	= (subclassID) 							=> fetch(DELETE_SUB_CLASS, subclassID)
 const name 				= (subclassID) 							=> fetch(SUB_CLASS_NAME, subclassID)
 const link 				= (subclassID) 							=> fetch(SUB_CLASS_LINK, subclassID)
 const sorted 			= (subclassID, sortStatus, page, limit) => fetchAll(SORTED_PRODUCTS, subclassID, sortStatus, page, limit)
+const byCategory 		= (categoryID) 							=> fetchAll(BY_CATEGORY_ID, categoryID)
 
 module.exports = {
 	all,
@@ -130,5 +143,6 @@ module.exports = {
 	deleteSubclass,
 	name,
 	link,
-	sorted
+	sorted,
+	byCategory
 }

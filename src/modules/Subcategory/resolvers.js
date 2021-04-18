@@ -1,20 +1,28 @@
 const model = require('./model')
+const pubsub = require('../../pubsub')
+const SUBCATEGORY = 'SUBCATEGORY'
 
 module.exports = {
 	Query: {
-		subcategories: async() => {
+		subcategory: async(_, { categoryID }) => {
 			try {
-				const subcategories = await model.all()
-				return subcategories
+				if(categoryID) {
+					const subcategory = await model.byID(categoryID)
+					return subcategory
+				}
+				else {
+					const subcategories = await model.all()
+					return subcategories
+				}
 			}
 			catch(error) {
 				throw error
 			}
 		},
-		subcategory: async(_, { categoryID }) => {
+		subcategories: async(_, { categoryID }) => {
 			try {
-				const subcategory = await model.byID(categoryID)
-				return subcategory
+				const subcategories = await model.byID(categoryID)
+				return subcategories
 			}
 			catch(error) {
 				throw error
@@ -63,6 +71,7 @@ module.exports = {
 				const newSubcategory = await model.addSubcategory(subcategoryName, categoryID)
 
 				if(newSubcategory) {
+					pubsub.publish(SUBCATEGORY)
 					return {
 						status: "200",
 						message: "New subcategory"
@@ -77,11 +86,12 @@ module.exports = {
 				}
 			}
 		},
-		deleteSubcategory: async(_, { subcategoryName, categoryID }) => {
+		deleteSubcategory: async(_, { subcategoryID }) => {
 			try {
-				const deletedSubcategory = await model.deleteSubcategory(subcategoryName, categoryID)
+				const deletedSubcategory = await model.deleteSubcategory(subcategoryID)
 
 				if (deletedSubcategory) {
+					pubsub.publish(SUBCATEGORY)
 					return {
 						status: "200",
 						message: "The subcategory has successfully been deleted!!!"
@@ -115,5 +125,25 @@ module.exports = {
 		name: 		global => global.product_name,
 		price: 		global => global.product_price,
 		category: 	global => global.category_name
+	},
+	Subscription: {
+		subcategory: {
+			resolve: async(payload, { categoryID }) => {
+				try {
+					if(categoryID) {
+						const subcategory = await model.byID(categoryID)
+						return subcategory
+					}
+					else {
+						const subcategories = await model.all()
+						return subcategories
+					}
+				}
+				catch(error) {
+					throw error
+				}
+			},
+			subscribe: () => pubsub.asyncIterator([SUBCATEGORY])
+		}
 	}
 }

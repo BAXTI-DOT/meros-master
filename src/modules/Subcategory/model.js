@@ -1,13 +1,5 @@
 const { fetch, fetchAll } = require('../../lib/postgres')
 
-const SUBCATEGORIES = `
-	SELECT
-		subcategory_id,
-		subcategory_name
-	FROM
-		sub_categories
-`
-
 const CATEGORY_NAME = `
 	SELECT 
 		c.category_id,
@@ -21,6 +13,16 @@ const CATEGORY_NAME = `
 		categories c ON c.category_id = s.category_id
 	WHERE
 		s.subcategory_id = $1
+`
+
+const SUBCATEGORIES = `
+	SELECT
+		subcategory_id,
+		subcategory_name
+	FROM
+		sub_categories
+	WHERE
+		category_id = $1
 `
 
 const SUBCATEGORY_NAME = `
@@ -96,29 +98,37 @@ const DELETE_SUB_CATEGORY = `
 		FROM
 	sub_categories
 		WHERE
-	subcategory_name = $1
-		AND
-	category_id = $2
+	subcategory_id = $1
 	RETURNING
 		subcategory_id
 `
 
-const all 				= () 							=> fetchAll(SUBCATEGORIES)
+const ALL = `
+	SELECT
+		subcategory_id,
+		subcategory_name
+	FROM
+		sub_categories
+`
+
 const byID 				= (categoryID)					=> fetchAll(BY_ID, categoryID)
 const name 				= (subcategoryID) 				=> fetch(SUBCATEGORY_NAME, subcategoryID)
 const addSubcategory 	= (name, categoryID) 			=> fetch(ADD_SUB_CATEGORY, name, categoryID)
-const deleteSubcategory = (name, categoryID)			=> fetch(DELETE_SUB_CATEGORY, name, categoryID)
+const deleteSubcategory = (subcategoryID)				=> fetch(DELETE_SUB_CATEGORY, subcategoryID)
 const sortedProducts 	= (subcategoryID, sortStatus, page, limit) 	=> fetchAll(SORTED_PRODUCTS, subcategoryID, sortStatus, page, limit)
 const subClasses		= (subcategoryID) 				=> fetchAll(SUB_CLASSES, subcategoryID)
 const linkName 			= (subcategoryID) 				=> fetch(CATEGORY_NAME, subcategoryID)
+const all 				= () 							=> fetchAll(ALL)
+const subcategories 	= (categoryID) 					=> fetchAll(SUBCATEGORIES, categoryID)
 
 module.exports = {
-	all,
 	byID,
 	addSubcategory,
 	deleteSubcategory,
 	name,
 	sortedProducts,
 	subClasses,
-	linkName
+	linkName,
+	all,
+	subcategories
 }

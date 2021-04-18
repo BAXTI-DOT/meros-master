@@ -27,16 +27,20 @@ module.exports = gql`
 
 	extend type Mutation {
 		addSubcategory(subcategoryName: String! categoryID: ID!): Data
-		deleteSubcategory(subcategoryName: String! categoryID: ID!): Data
+		deleteSubcategory(subcategoryID: ID!): Data
 	}
 
 	extend type Query {
-		subcategories: [ Subcategories ]
+		subcategories(categoryID: ID!): [ Subcategories ]
 		subcategory(categoryID: ID!): [ Subcategories ]
 		subcategoryName(subcategoryID: ID!): String!
 		subClasses(subcategoryID: ID!): [ SubClasses ]
 		subcategoryProducts(subcategoryID: ID! sortStatus: Int! page: Int! limit: Int!): [ SubcategoryProducts ]
 		subcategoryLink(subcategoryID: ID!):  LinkSubcategory
+	}
+
+	extend type Subscription {
+		subcategory(categoryID: ID!): [ Subcategories ]
 	}
 
 `

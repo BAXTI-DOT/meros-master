@@ -17,6 +17,11 @@ module.exports = gql`
 	extend type Mutation {
 		addCategory(categoryName: String!): Data
 		deleteCategory(categoryID: ID!): Data
+		updateCategory(categoryID: ID! categoryName: String!): Data
 	}	
+
+	extend type Subscription {
+		categories: [ Categories ]
+	}
 
 `

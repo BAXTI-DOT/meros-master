@@ -91,3 +91,35 @@ CREATE TABLE regions(
 	region_name character varying(128) not null,
 	state_id uuid not null references states (state_id)
 );
+
+CREATE TABLE comments(
+	comment_id uuid not null default uuid_generate_v4() primary key,
+	comment_body varchar(256) not null,
+	comment_rate int default 1,
+	product_id uuid not null references products(product_id),
+	user_id uuid not null references users(user_id),
+	created_at varchar(64)
+);
+
+CREATE TABLE navbar(
+	navbar_id uuid not null default uuid_generate_v4() primary key,
+	category_id uuid not null references categories (category_id)
+);
+
+CREATE TABLE subcategory_menu (
+	menu_id uuid not null default uuid_generate_v4() primary key,
+	subcategory_id uuid not null references sub_categories (subcategory_id),
+	category_id uuid not null references categories (category_id)
+);
+
+CREATE TABLE filters_main(
+	filtermain_id uuid not null default uuid_generate_v4() primary key,
+	filtermain_title character varying(128) not null,
+	subcategory_id uuid not null references sub_categories (subcategory_id)
+);
+
+CREATE TABLE filter_details(
+	filterdetail_id uuid not null default uuid_generate_v4() primary key,
+	filterdetail_title character varying(128) not null,
+	filtermain_id uuid not null references filters_main(filtermain_id)
+);
