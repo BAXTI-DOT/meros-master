@@ -12,65 +12,16 @@ module.exports = {
 			catch (error) {
 				throw error
 			}
-		}
-	},
-	Mutation: {
-		addToNavbar: async(_, { categoryID }) => {
+		},
+		popular: async() => {
 			try {
-				const all = await model.navbar()
-
-				if(all.length === 11) {
-					throw "You have reached limit"
-				}
-
-				const exists = await model.byID(categoryID)
-
-				if(exists.length !== 0) {
-					throw "This category already in navbar"
-				}
-
-				const newNavbarCategory = await model.addToNavbar(categoryID)
-
-				if(newNavbarCategory) {
-					pubsub.publish(NAVBAR)
-					return {
-						status: "200",
-						message: "Success"
-					}
-				}
-				else {
-					throw "Error creating navbar category"
-				}
+				const popular = await model.popular()
+				return popular
 			}
-			catch(error) {
-				return {
-					status: "ERROR",
-					message: new Error(error).message || error
-				}
+			catch (error) {
+				throw error
 			}
- 		},
- 		deleteFromNavbar: async(_, { categoryID }) => {
- 			try {
- 				const deletedFromNavbar = await model.deleteFrom(categoryID)
-
- 				if(deletedFromNavbar) {
-					pubsub.publish(NAVBAR)
- 					return {
- 						status: "200",
- 						message: "Succesfully deleted from navbar"
- 					}
- 				}
- 				else {
- 					throw "Error while deleting from navbar"
- 				}
- 			}
- 			catch(error) {
- 				return {
- 					status: "Error",
- 					message: new Error(error).message || error
- 				}
- 			}
- 		}
+		}
 	},
 	Subscription: {
 		navbar: {

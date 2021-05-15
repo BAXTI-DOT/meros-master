@@ -14,6 +14,16 @@ module.exports = {
 			catch(error) {
 				throw error
 			}
+		},
+		getCartSum: async(_, {}, { token }) => {
+			try {
+				const { userId } = verify(token)
+				const sum = await model.getCartSum(userId)
+				return sum
+			}	
+			catch(err) {
+				throw err
+			}
 		}
 	},
 	Mutation: {
@@ -34,23 +44,24 @@ module.exports = {
 						}
 					}
 					else {
-						throw "Error while updating count"
+						return {
+							status: "400",
+							message: "Error while updating count!"
+						}
+					}
+				}
+
+				const newCartProduct = await model.addToCart(productID, productCount, userId)
+
+				if(newCartProduct) {
+					pubsub.publish(CART)
+					return {
+						status: "200",
+						message: "New product has been added to the cart"
 					}
 				}
 				else {
-
-					const newCartProduct = await model.addToCart(productID, productCount, userId)
-
-					if(newCartProduct) {
-						pubsub.publish(CART)
-						return {
-							status: "200",
-							message: "New product has been added to the cart"
-						}
-					}
-					else {
-						throw "Error while adding to cart" 
-					}
+					throw "Error while adding to cart" 
 				}
 				
 			}
@@ -85,6 +96,46 @@ module.exports = {
 					message: new Error(error).message || error
 				}
 			}
+		},
+		updateCountPlus: async(_, { cartID }, { token }) => {
+			try {
+				const plus = await model.plus(cartID)
+				pubsub.publish(CART)
+
+				if(plus) {
+					return {
+						status: 200,
+						message: "Plus"
+					}
+				}
+				else {
+					throw "Error while plus"
+				}
+
+			}
+			catch(error) {
+				throw new Error(error).message || error
+			}
+		},
+		updateCountMinus: async(_, { cartID }, { token }) => {
+			try {
+				const minus = await model.minus(cartID)
+				pubsub.publish(CART)
+
+				if(minus) {
+					return {
+						status: 200,
+						message: "Success minus"
+					}
+				}
+				else {
+					throw "Error minus"
+				}
+
+			}
+			catch(error) {
+				throw new Error(error).message || error
+			}
 		}
 	},
 	Subscription: {
@@ -99,7 +150,21 @@ module.exports = {
 					throw new Error(error).message || error
 				}
 			},
-			subscribe: () => pubsub.asyncIterator([CART]),
+			subscribe: () => pubsub.asyncIterator([CART])
+		},
+		getCartSum: {
+			resolve: async(payload, args, { token }) => {
+				try {
+					const { userId } = verify(token)
+					console.log(userId)
+					const sum = await model.getCartSum(userId)
+					return sum
+				}
+				catch(err) {
+					throw new Error(err).message || err
+				}
+			},
+			subscribe: () => pubsub.asyncIterator([CART])
 		}
 	},
 	Cart: {
@@ -107,6 +172,10 @@ module.exports = {
 		name: 			global => global.product_name,
 		price: 			global => global.product_price,
 		count: 			global => global.product_count,
-		subcategory: 	global => global.subcategory_name
+		subcategory: 	global => global.subcategory_name,
+		image: 			global => global.image_link
+	},
+	Sum: {
+		sum: global => global.sum
 	}
 }

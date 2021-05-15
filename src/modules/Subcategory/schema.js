@@ -7,22 +7,18 @@ module.exports = gql`
 		name: String!
 	}
 
-	type SubClasses {
-		id: ID!
-		name: String!
-	}
-
 	type LinkSubcategory {
 		id: ID!
+		categoryID: ID!
 		category: String!
 		subcategory: String!
+		subcategoryID: ID!
 	}
 
-	type SubcategoryProducts {
+	type Modalsubcategory {
 		id: ID!
 		name: String!
-		price: Int!
-		category: String!
+		subclass: [ SubClasses! ]
 	}
 
 	extend type Mutation {
@@ -33,10 +29,11 @@ module.exports = gql`
 	extend type Query {
 		subcategories(categoryID: ID!): [ Subcategories ]
 		subcategory(categoryID: ID!): [ Subcategories ]
+		psubcategory(productID: ID!): Subcategories
 		subcategoryName(subcategoryID: ID!): String!
-		subClasses(subcategoryID: ID!): [ SubClasses ]
 		subcategoryProducts(subcategoryID: ID! sortStatus: Int! page: Int! limit: Int!): [ SubcategoryProducts ]
 		subcategoryLink(subcategoryID: ID!):  LinkSubcategory
+		modalSubcategory(categoryID: ID!): [ Modalsubcategory! ]
 	}
 
 	extend type Subscription {

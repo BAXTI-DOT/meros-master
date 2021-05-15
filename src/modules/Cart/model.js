@@ -12,7 +12,9 @@ const GET_CART_PRODUCTS = `
 		s.subcategory_name,
 		p.product_name,
 		p.product_price,
-		c.product_count
+		c.product_count,
+		i.image_link,
+		i.product_id
 	FROM
 		cart c
 	INNER JOIN
@@ -21,6 +23,8 @@ const GET_CART_PRODUCTS = `
 		sub_categories s ON s.subcategory_id = p.subcategory_id
 	INNER JOIN
 		users u ON u.user_id = c.user_id
+	INNER JOIN
+		product_images i ON p.product_id = i.product_id
 	WHERE
 		c.user_id = $1
 `
@@ -68,16 +72,57 @@ const UPDATE_CART = `
 		cart_id
 `
 
+const GET_CART_SUM = `
+	SELECT
+		sum(c.product_count * p.product_price),
+		c.user_id
+	FROM
+		cart c
+	NATURAL JOIN
+		products p
+	WHERE
+		c.user_id = $1
+	GROUP BY c.user_id
+`
+
+const UPDATE_COUNT_PLUS = `
+	UPDATE 
+		cart 
+	SET 
+		product_count = product_count + 1 
+	WHERE 
+		cart_id = $1
+	RETURNING
+		cart_id
+`
+
+const UPDATE_COUNT_MINUS = `
+	UPDATE 
+		cart 
+	SET 
+		product_count = product_count - 1 
+	WHERE 
+		cart_id = $1
+	RETURNING
+		cart_id
+`
+
 const getProducts		= (userID) 							=> fetchAll(GET_CART_PRODUCTS, userID)
 const addToCart 		= (productID, productCount, userID) => fetch(ADD_TO_CART, productID, productCount, userID)
 const deleteFromCart 	= (productID, userID) 				=> fetch(DELETE_FROM_CART, productID, userID)
 const checkExisting 	= (productID, userID) 				=> fetchAll(CHECK_EXISTING, productID, userID)
 const updateCount 		= (productCount, productID, userID) => fetch(UPDATE_CART, productCount, productID, userID)
+const getCartSum 		= (userID) 							=> fetchAll(GET_CART_SUM, userID)
+const plus 				= (cartID) 							=> fetch(UPDATE_COUNT_PLUS, cartID)
+const minus 			= (cartID) 							=> fetch(UPDATE_COUNT_MINUS, cartID)
 
 module.exports = {
 	getProducts,
 	addToCart,
 	deleteFromCart,
 	checkExisting,
-	updateCount
+	updateCount,
+	getCartSum,
+	plus,
+	minus
 }

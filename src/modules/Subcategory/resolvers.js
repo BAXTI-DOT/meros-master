@@ -1,4 +1,5 @@
 const model = require('./model')
+const subclassModel = require('../Subclass/model')
 const pubsub = require('../../pubsub')
 const SUBCATEGORY = 'SUBCATEGORY'
 
@@ -28,6 +29,15 @@ module.exports = {
 				throw error
 			}
 		},
+		psubcategory: async(_, { productID }) => {
+			try {
+				const subcategory = await model.byproductID(productID)
+				return subcategory
+			}
+			catch(error) {
+				throw error
+			}
+		},
 		subcategoryName: async(_, { subcategoryID }) => {
 			try {
 				const { subcategory_name: name} = await model.name(subcategoryID)
@@ -46,15 +56,6 @@ module.exports = {
 				throw error
 			}
 		},
-		subClasses: async(_, { subcategoryID }) => {
-			try {
-				const subClasses = await model.subClasses(subcategoryID)
-				return subClasses
-			}
-			catch(error) {
-				throw error
-			}
-		},
 		subcategoryLink: async(_, { subcategoryID }) => {
 			try {
 				const linkName = await model.linkName(subcategoryID)
@@ -62,6 +63,15 @@ module.exports = {
 			}
 			catch(error) {
 				throw error
+			}
+		},
+		modalSubcategory: async(_, { categoryID }) => {
+			try {
+				const modal = await model.modal(categoryID)
+				return modal
+			}
+			catch(err) {
+				throw err
 			}
 		}
 	},
@@ -117,14 +127,23 @@ module.exports = {
 	},
 	LinkSubcategory: {
 		id: 			global => global.subcategory_id,
+		categoryID: 	global => global.category_id,
 		category: 		global => global.category_name,
-		subcategory: 	global => global.subcategory_name
+		subcategory: 	global => global.subcategory_name,
+		subcategoryID: 	global => global.subcategory_id
 	},
 	SubcategoryProducts: {
 		id: 		global => global.product_id,
 		name: 		global => global.product_name,
 		price: 		global => global.product_price,
-		category: 	global => global.category_name
+		category: 	global => global.category_name,
+		sale: 		global => global.sale_amount,
+		image: 		global => global.image_link
+	},
+	Modalsubcategory: {
+		id: 			global => global.subcategory_id,
+		name: 			global => global.subcategory_name,
+		subclass: async global => await subclassModel.subclasses(global.subcategory_id)
 	},
 	Subscription: {
 		subcategory: {

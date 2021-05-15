@@ -3,6 +3,19 @@ const { AuthenticationError } = require('apollo-server-express')
 const loginModel = require('./model') 
 const jwt = require('../../lib/jwtGenerator') 
 
+const admins = [
+	{
+		id: 1,
+		username: "Baxtiyor",
+		password: "root1234"
+	},
+	{
+		id: 2,
+		username: "Nilufar",
+		password: "root5678"
+	}
+]
+
 module.exports = {
 	Query: {
 		demo: () => "OK"
@@ -37,8 +50,22 @@ module.exports = {
 
 			}
 			catch(e) {
-				console.error(e.message)
-				return new AuthenticationError()
+				return new AuthenticationError(e)
+			}
+		},
+		adminLogin: async(_, { username, password }) => {
+			try {
+				const admin = admins.find(e => e.username === username && e.password === password)
+
+				if(admin) {
+					return jwt.sign(username, password)
+				}
+				else {
+					throw new Error("You are not logged") 
+				}
+			}
+			catch(err) {
+				return new AuthenticationError(err)
 			}
 		}
 	}

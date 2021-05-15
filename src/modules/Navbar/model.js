@@ -2,49 +2,28 @@ const { fetch, fetchAll } = require('../../lib/postgres')
 
 const NAVBAR = `
 	SELECT
-		n.navbar_id,
-		n.category_id,
-		c.category_id,
-		c.category_name
+		category_id,
+		category_name
 	FROM
-		navbar n
-	INNER JOIN
-		categories c ON n.category_id = c.category_id
+		categories
+	WHERE
+		is_navbar = true
 `
 
-const ADD_TO_NAVBAR = `
-	INSERT INTO
-		navbar(category_id)
-	VALUES($1)
-	RETURNING navbar_id
-`
-
-const BY_ID = `
+const POPULAR = `
 	SELECT
-		*
+		category_id,
+		category_name
 	FROM
-		navbar
+		categories
 	WHERE
-		category_id = $1
+		is_popular = true
 `
 
-const DELETE = `
-	DELETE FROM
-		navbar
-	WHERE
-		category_id = $1
-	RETURNING
-		navbar_id
-`
-
-const navbar		= () 			=> fetchAll(NAVBAR)
-const addToNavbar 	= (categoryID) 	=> fetch(ADD_TO_NAVBAR, categoryID)
-const byID 			= (categoryID) 	=> fetchAll(BY_ID, categoryID)
-const deleteFrom 	= (categoryID) 	=> fetch(DELETE, categoryID)
+const navbar 	= () => fetchAll(NAVBAR)
+const popular 	= () => fetchAll(POPULAR)
 
 module.exports = {
 	navbar,
-	addToNavbar,
-	byID,
-	deleteFrom
+	popular
 }

@@ -5,19 +5,23 @@ module.exports = gql`
 	type Categories {
 		id: ID!
 		name: String!
+		isNavbar: Boolean
+		isPopular: Boolean
 	}
+
 
 	extend type Query {
 		categories: [ Categories ]
-		category(categoryId: ID!):  Categories
+		category(productID: ID!):  Categories
+		byCategoryID(categoryID: ID!): Categories
 		categoryName(categoryId: ID!): String!
 		categoryCount(categoryId: ID!): Int!
 	}
 
 	extend type Mutation {
-		addCategory(categoryName: String!): Data
+		addCategory(categoryName: String! isNavbar: Boolean isPopular: Boolean): Data
 		deleteCategory(categoryID: ID!): Data
-		updateCategory(categoryID: ID! categoryName: String!): Data
+		updateCategory(categoryID: ID! categoryName: String! isNavbar: Boolean isPopular: Boolean): Data
 	}	
 
 	extend type Subscription {

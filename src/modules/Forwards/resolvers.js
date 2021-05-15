@@ -8,6 +8,7 @@ module.exports = {
 		getForward: async(_, {}, { token }) => {
 			try {
 				const { userId } = verify(token)
+				console.log(userId)
 				const forwards = await model.forwards(userId)
 				return forwards
 			}
@@ -24,12 +25,14 @@ module.exports = {
 
 				if(checkExisting.length !== 0) {
 					return {
-						status: "200",
+						status: "BOR",
 						message: "Your product is already in forwards"
 					}
 				}
 
 				const newForward = await model.addForward(productID, userId)
+
+				console.log(newForward)
 
 				if(newForward) {
 					pubsub.publish(FORWARD)

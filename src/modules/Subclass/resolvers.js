@@ -32,6 +32,15 @@ module.exports = {
 				throw error
 			}
 		},
+		psubclass: async(_, { productID }) => {
+			try {
+				const subclass = await model.byproductID(productID)
+				return subclass
+			}
+			catch(error) {
+				throw error
+			}
+		},
 		subclassName: async(_, { subclassID }) => {
 			try {
 				const name = await model.name(subclassID)
@@ -57,6 +66,15 @@ module.exports = {
 			}
 			catch(error) {
 				throw error
+			}
+		},
+		subClasses: async(_, { subcategoryID }) => {
+			try {
+				const subclassses = await model.subclasses(subcategoryID)
+				return subclassses
+			}
+			catch(err) {
+				throw err
 			}
 		}
 	},
@@ -106,8 +124,11 @@ module.exports = {
 	LinkSubClass: {
 		id: global => global.subclass_id,
 		category: global => global.category_name,
+		categoryID: global => global.category_id,
 		subcategory: global => global.subcategory_name,
-		subclass: global => global.subclass_name
+		subcategoryID: global => global.subcategory_id,
+		subclass: global => global.subclass_name,
+		subclassID: global => global.subclass_id
 	},
 	Subscription: {
 		subClass: {

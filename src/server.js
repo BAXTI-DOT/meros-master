@@ -1,12 +1,24 @@
 const http = require('http') 
 const express  = require('express') 
 const { ApolloServer } = require('apollo-server-express') 
-// const context = './src/apollo-context'
+const path = require('path')
+const fileUpload = require('express-fileupload')
+const app = express()
+const cors = require('cors')
+var bodyParser = require('body-parser') 
 
 // loading modules
-const modules = require('./modules') 
-const app = express()
+const modules = require('./modules')
 const PORT = process.env.PORT || 4000
+const routes = require('./express/routes')
+app.use(bodyParser.urlencoded({ extended: false }))
+
+app.use(cors())
+app.use(fileUpload())
+app.use(express.json())
+app.use(routes)
+app.use(express.static(path.join(__dirname, '/productImages')))
+
 
 const findUser = (authToken) => {
     return (tokenValidationResult) => {
@@ -24,7 +36,7 @@ const server = new ApolloServer({
 	    } 
 	    else {
 	      // check from req
-	      const token = req.headers.token || "";
+	      const token = req.headers.authorization || "";
 
 	      return { token }
 	    }

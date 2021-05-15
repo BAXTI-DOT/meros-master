@@ -14,7 +14,7 @@ INSERT INTO sub_categories (
 	subcategory_name,
 	category_id
 )
-VALUES ('Dunyo kitoblari', 'e11d9387-3161-48ac-b182-edbc8b90548f'),
+VALUES ('Dunyo kitoblari', 'ef2667f5-a30a-451c-9371-5e5ca795a444'),
 	   ('O`zbekcha  kitoblar', 'e11d9387-3161-48ac-b182-edbc8b90548f'),
 	   ('Kinolar', '79b728d7-0399-4657-a154-b60c2f2632c3'),
 	   ('Multfilmlar', '79b728d7-0399-4657-a154-b60c2f2632c3'),
@@ -188,20 +188,31 @@ INSERT INTO best_offers(
 	product_id
 )
 
-VALUES('57a16a5c-bf7a-442d-a119-16c27cb03fc9'),
-	  ('57d7b261-b2bd-4fed-b737-8ff6d6b53fe3'),
-	  ('8e31011f-bd46-441a-9781-14f00aaf6b9f'),
-	  ('b0c111cb-3455-4f92-9e43-173d1454d85f');
+VALUES('549ede7f-9ed5-4b60-80d8-d7edbe1c9b8e'),
+	  ('13720f25-4556-4089-88f4-16f045fb089b'),
+	  ('34123b6c-29a6-4ea7-bce5-e978b2acc44d'),
+	  ('a066e7df-9e16-4ba4-8bf3-35da3dbfade4');
+
+
+INSERT INTO sale_products(
+	product_id
+)
+
+VALUES('5e86bae2-c86d-4da5-bb51-591e09b4e66c'),
+	  ('946efa37-4730-40f3-adfd-52f248559b72'),
+	  ('3d6dca8c-a5bf-48db-a945-0eef87fbaec1'),
+	  ('9df9bcd7-fa52-4b9a-824e-f56d7f63c9fb');
 	  
 
 INSERT INTO recommended_products(
 	product_id
 )
 
-VALUES('57a16a5c-bf7a-442d-a119-16c27cb03fc9'),
-	  ('57d7b261-b2bd-4fed-b737-8ff6d6b53fe3'),
-	  ('8e31011f-bd46-441a-9781-14f00aaf6b9f'),
-	  ('b0c111cb-3455-4f92-9e43-173d1454d85f');
+VALUES('946efa37-4730-40f3-adfd-52f248559b72'),
+	  ('e59bb5a1-907b-4c31-85ff-1100108b3882'),
+	  ('1bc903d6-fec1-40ce-a301-487785eb4098'),
+	  ('78dfd63a-cb94-41c7-bf8b-35fc1e261dc6'),
+	  ('614cbbf5-b05b-4ede-926f-861aeff41510');
 
 INSERT INTO cart(
 	product_id,

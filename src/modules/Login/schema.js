@@ -8,5 +8,6 @@ module.exports = gql`
 	
 	extend type Mutation {
 		login(number: String! password: String!): String!
+		adminLogin(username: String! password: String!): String!
 	}
 `

@@ -10,6 +10,15 @@ module.exports = {
 			catch(error) {
 				throw error
 			}
+		},
+		oldDetails: async(_, { productID }) => {
+			try {
+				const filters = await model.oldDetails(productID)
+				return filters
+			}
+			catch(error) {
+				throw error
+			}
 		}
 	},
 	Filters: {

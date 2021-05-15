@@ -17,46 +17,19 @@ const Navbar = require('./Navbar')
 const Products = require('./Products')
 const Filter = require('./Filter')
 const Filters = require('./Filters')
-
-const users = [
-	{
-		id: 1,
-		name: 'A',
-		age: 99
-	},
-	{
-		id: 1,
-		name: 'A',
-		age: 99
-	},
-	{
-		id: 1,
-		name: 'A',
-		age: 11
-	},
-	{
-		id: 1,
-		name: 'A',
-		age: 67
-	},
-	{
-		id: 1,
-		name: 'A',
-		age: 67
-	}
-]
-
-// const filter = users.filter((e, i, a) => console.log(a.indexOf(e)))
-
-// var result = users.reduce((unique, o) => {
-//     if(!unique.some(obj => obj.age === o.age)) {
-//       unique.push(o);
-//     }
-//     return unique;
-// },[]);
-
-// console.log(result)
-
+const Order = require('./Order')
+const SaleProducts = require('./SaleProducts')
+const GenerateId = require('./GenerateId')
+const Filtered = require('./Filtered')
+const ImageProduct = require('./ImageProduct')
+const OldFilters = require('./OldFilters')
+const ProductDetails = require('./Product-details')
+const SingleProduct = require('./Single-product')
+const Cabinet = require('./Cabinet')
+const Users = require('./Users')
+const OrderDetails = require('./Order-details')
+const OrderAddress = require('./Order-address')
+const Search = require('./Search-list')
 
 module.exports = [
 	Login,
@@ -77,5 +50,18 @@ module.exports = [
 	Navbar,
 	Products,
 	Filter,
-	Filters
+	Filters,
+	Order,
+	SaleProducts,
+	GenerateId,
+	Filtered,
+	ImageProduct,
+	OldFilters,
+	ProductDetails,
+	SingleProduct,
+	Cabinet,
+	Users,
+	OrderDetails,
+	OrderAddress,
+	Search
 ]

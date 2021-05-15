@@ -23,7 +23,7 @@ module.exports = {
 				}
 
 				// Checking validity of number
-				if(args.number.length !== 13) {
+				if(args.number.length !== 12) {
 					return new Error("Missing number")
 				}
 
@@ -49,7 +49,6 @@ module.exports = {
 
 			}
 			catch(e) {
-				console.error(e.message)
 				return new Error("Authorization Error")
 			}
 		}

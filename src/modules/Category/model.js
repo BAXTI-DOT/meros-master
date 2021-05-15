@@ -5,22 +5,41 @@ const CATEGORIES = `
 		*
 	FROM
 		categories
+	ORDER BY 
+		category_name
 `
 
-const BY_ID = `
+const BY_CATEGORY_ID = `
 	SELECT
-		*
+		category_id,
+		category_name,
+		is_navbar,
+		is_popular
 	FROM
-		categories
+		categories 
 	WHERE
 		category_id = $1
 `
 
+const BY_ID = `
+	SELECT
+		c.category_id,
+		c.category_name,
+		p.product_id,
+		p.category_id
+	FROM 
+		categories c
+	INNER JOIN
+		products p ON p.category_id = c.category_id
+	WHERE
+		p.product_id = $1
+`
+
 const ADD_CATEGORY = `
 	INSERT INTO 
-		categories(category_name)
+		categories(category_name, is_navbar, is_popular)
 	VALUES
-		($1)
+		($1, $2, $3)
 	RETURNING
 		category_id
 `
@@ -53,71 +72,13 @@ const PRODUCT_COUNT = `
 		category_id = $1
 `
 
-const NEW_PRODUCTS = `
-	SELECT
-		s.subcategory_id,
-		p.category_id,
-		p.subcategory_id,
-		p.product_id,
-		n.product_id,
-		s.subcategory_name,
-		p.product_name,
-		p.product_price
-	FROM
-		new_products n
-	INNER JOIN
-		products p ON p.product_id = n.product_id
-	INNER JOIN
-		sub_categories s ON s.subcategory_id = p.subcategory_id
-	WHERE
-		p.category_id = $1
-`
-
-const GIFT_PRODUCTS = `
-	SELECT
-		s.subcategory_id,
-		p.category_id,
-		p.subcategory_id,
-		p.product_id,
-		g.product_id,
-		s.subcategory_name,
-		p.product_name,
-		p.product_price
-	FROM
-		gift_products g
-	INNER JOIN
-		products p ON p.product_id = g.product_id
-	INNER JOIN
-		sub_categories s ON s.subcategory_id = p.subcategory_id
-	WHERE
-		p.category_id = $1
-`
-
-const NEW_PRODUCT_TITLE = `
-	SELECT 
-		title_id,
-		title_name
-	FROM
-		new_products_title
-	WHERE
-		category_id = $1
-`
-
-const GIFT_PRODUCT_TITLE = `
-	SELECT 
-		title_id,
-		title_name
-	FROM
-		gift_products_title
-	WHERE
-		category_id = $1
-`
-
 const UPDATE_CATEGORY = `
 	UPDATE 
 		categories
 	SET
-		category_name = $1
+		category_name = $1,
+		is_navbar = $3,
+		is_popular = $4
 	WHERE
 		category_id = $2
 	RETURNING
@@ -125,16 +86,26 @@ const UPDATE_CATEGORY = `
 `
 
 const categories 	 	= () 			=> fetchAll(CATEGORIES)
-const byID		 	 	= (categoryID) 	=> fetch(BY_ID, categoryID)
-const addCategory 	 	= (name) 		=> fetch(ADD_CATEGORY, name)
+const byID		 	 	= (productID) 	=> fetch(BY_ID, productID)
+const addCategory 	 	= (name, isNavbar, isPopular) 		=> fetch(ADD_CATEGORY, name, isNavbar, isPopular)
 const deleteCategory 	= (categoryID) 	=> fetch(DELETE_CATEGORY, categoryID)
-const updateCategory 	= (categoryID, categoryName) 	=> fetch(UPDATE_CATEGORY, categoryName, categoryID)
 const name 			 	= (categoryID) 	=> fetch(CATEGORY_NAME, categoryID)
 const productCount 	 	= (categoryID) 	=> fetch(PRODUCT_COUNT, categoryID)
-const newProducts 	 	= (categoryID) 	=> fetchAll(NEW_PRODUCTS, categoryID)
-const giftProducts 	 	= (categoryID) 	=> fetchAll(GIFT_PRODUCTS, categoryID)
-const newProductTitle 	= (categoryID)  => fetch(NEW_PRODUCT_TITLE, categoryID)
-const giftProductTitle 	= (categoryID)  => fetch(GIFT_PRODUCT_TITLE, categoryID)
+const updateCategory 	= async(categoryName, categoryID, isNavbar, isPopular) => {
+
+	let oldCategory = await fetch(`SELECT * FROM categories WHERE category_id = $1`, categoryID)
+
+	if(!oldCategory) throw new Error("No such category")
+
+	return fetch(
+		UPDATE_CATEGORY,
+		categoryName ? categoryName : oldCategory.category_name,
+		categoryID,
+		isNavbar,
+		isPopular
+	)
+}
+const byCategoryID = (categoryID) => fetch(BY_CATEGORY_ID, categoryID)
 
 
 module.exports = {
@@ -144,9 +115,6 @@ module.exports = {
 	deleteCategory,
 	name,
 	productCount,
-	newProducts,
-	giftProducts,
-	newProductTitle,
-	giftProductTitle,
-	updateCategory
+	updateCategory,
+	byCategoryID
 }

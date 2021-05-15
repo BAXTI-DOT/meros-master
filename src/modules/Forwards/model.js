@@ -7,15 +7,20 @@ const GET_FORWARD = `
 		s.subcategory_id,
 		p.subcategory_id,
 		f.product_id,
+		i.product_id,
 		p.product_name,
 		p.product_price,
-		s.subcategory_name
+		p.sale_amount,
+		s.subcategory_name,
+		i.image_link
 	FROM
 		forwards f
 	INNER JOIN
 		products p ON p.product_id = f.product_id
 	INNER JOIN
 		sub_categories s ON s.subcategory_id = p.subcategory_id
+	INNER JOIN
+		product_images i ON i.product_id = p.product_id
 	WHERE
 		f.user_id = $1
 `

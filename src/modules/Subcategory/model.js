@@ -1,5 +1,23 @@
 const { fetch, fetchAll } = require('../../lib/postgres')
 
+const ALL = `
+	SELECT
+		subcategory_id,
+		subcategory_name
+	FROM
+		sub_categories
+`
+
+const BY_ID = `
+	SELECT
+		subcategory_id,
+		subcategory_name
+	FROM
+		sub_categories
+	WHERE
+		category_id = $1
+`
+
 const CATEGORY_NAME = `
 	SELECT 
 		c.category_id,
@@ -43,13 +61,17 @@ const SORTED_PRODUCTS = `
 		p.subcategory_id,
 		p.product_name,
 		p.product_price,
-		c.category_name
+		p.sale_amount,
+		c.category_name,
+		i.image_link
 	FROM
 		products p
 	INNER JOIN
 		categories c ON p.category_id = c.category_id
 	INNER JOIN
 		sub_categories s ON p.subcategory_id = s.subcategory_id
+	INNER JOIN
+		product_images i ON p.product_id = i.product_id
 	WHERE
 		p.subcategory_id = $1
 	ORDER BY
@@ -65,24 +87,18 @@ const SORTED_PRODUCTS = `
 	FETCH FIRST $4 ROW ONLY
 `
 
-const SUB_CLASSES = `
-	SELECT 
-		subclass_id,
-		subclass_name 
-	FROM
-		sub_classes
-	WHERE
-		subcategory_id = $1
-`
-
-const BY_ID = `
+const BY_PRODUCT_ID = `
 	SELECT
-		subcategory_id,
-		subcategory_name
-	FROM
-		sub_categories
+		s.subcategory_id,
+		s.subcategory_name,
+		p.product_id,
+		p.subcategory_id
+	FROM 
+		sub_categories s
+	INNER JOIN
+		products p ON p.subcategory_id = s.subcategory_id
 	WHERE
-		category_id = $1
+		p.product_id = $1
 `
 
 const ADD_SUB_CATEGORY = `
@@ -103,23 +119,26 @@ const DELETE_SUB_CATEGORY = `
 		subcategory_id
 `
 
-const ALL = `
+const MODAL = `
 	SELECT
 		subcategory_id,
 		subcategory_name
 	FROM
 		sub_categories
+	WHERE
+		category_id = $1
 `
 
 const byID 				= (categoryID)					=> fetchAll(BY_ID, categoryID)
 const name 				= (subcategoryID) 				=> fetch(SUBCATEGORY_NAME, subcategoryID)
 const addSubcategory 	= (name, categoryID) 			=> fetch(ADD_SUB_CATEGORY, name, categoryID)
 const deleteSubcategory = (subcategoryID)				=> fetch(DELETE_SUB_CATEGORY, subcategoryID)
-const sortedProducts 	= (subcategoryID, sortStatus, page, limit) 	=> fetchAll(SORTED_PRODUCTS, subcategoryID, sortStatus, page, limit)
-const subClasses		= (subcategoryID) 				=> fetchAll(SUB_CLASSES, subcategoryID)
+const sortedProducts 	= (subcategoryID, sortStatus, page, limit) 	=> fetchAll(SORTED_PRODUCTS, subcategoryID, sortStatus, (page - 1) * limit, limit)
 const linkName 			= (subcategoryID) 				=> fetch(CATEGORY_NAME, subcategoryID)
 const all 				= () 							=> fetchAll(ALL)
 const subcategories 	= (categoryID) 					=> fetchAll(SUBCATEGORIES, categoryID)
+const byproductID 		= (productID) 					=> fetch(BY_PRODUCT_ID, productID)
+const modal 			= (categoryID) 					=> fetchAll(MODAL, categoryID)
 
 module.exports = {
 	byID,
@@ -127,8 +146,9 @@ module.exports = {
 	deleteSubcategory,
 	name,
 	sortedProducts,
-	subClasses,
 	linkName,
 	all,
-	subcategories
+	subcategories,
+	byproductID,
+	modal
 }

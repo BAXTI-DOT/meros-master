@@ -14,7 +14,7 @@ module.exports = gql`
 		userName: String!
 		rate: Int!
 		body: String!
-		createdTime: String!
+		createdTime: DateTime
 	}
 
 	type StarRate {
@@ -22,8 +22,8 @@ module.exports = gql`
 	}
 
 	extend type Query {
-		comments: [Comments]
-		byProductID(productID: ID! page: Number limit: Number): [UserCommments]
+		comments: [ Comments! ]
+		byProductID(productID: ID! page: Number limit: Number): [ UserCommments ]
 		countComments(limit: Number! productID: ID!): Int!
 		firstCount(productID: ID!): StarRate
 		secondCount(productID: ID!): StarRate
@@ -34,7 +34,7 @@ module.exports = gql`
 	}
 
 	extend type Subscription {
-		byTovarId(productID: ID!): [UserCommments]
+		byProductID(productID: ID! page: Number limit: Number): [ UserCommments ]
 	}
 
 	extend type Mutation {

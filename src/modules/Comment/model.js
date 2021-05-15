@@ -31,9 +31,9 @@ const BY_PRODUCT_ID = `
 
 const ADD_COMMENT = `
 	INSERT INTO 
-		comments (comment_body, comment_rate, product_id, user_id, created_at) 
+		comments (comment_body, comment_rate, product_id, user_id) 
 	VALUES 
-		($1, $2, $3, $4, $5)
+		($1, $2, $3, $4)
 	RETURNING
 		comment_id
 `
@@ -117,7 +117,7 @@ const COUNT	= `SELECT COUNT(comment_id) c FROM comments WHERE product_id = $1`
 const comments 		= () 									=> fetchAll(COMMENTS)
 const byProductID 	= (productID, page, limit) 				=> fetchAll(BY_PRODUCT_ID, productID, (page - 1) * limit, limit)
 const count			= async (limit, productID)				=> Math.ceil((await fetch(COUNT, productID)).c / limit)
-const createComment = (body, rate, productID, userId, date) => fetch(ADD_COMMENT, body, rate, productID, userId, date)
+const createComment = (body, rate, productID, userId) => fetch(ADD_COMMENT, body, rate, productID, userId)
 const firstStar 	= (productID) 							=> fetch(FIRST_STAR, productID)
 const secondStar  	= (productID) 							=> fetch(SECOND_STAR, productID)
 const thirdStar  	= (productID) 							=> fetch(THIRD_STAR, productID)

@@ -1,4 +1,5 @@
 const model = require('./model')
+const subcategoryModel = require('../Subcategory/model')
 const pubsub = require('../../pubsub')
 const CATEGORY = 'CATEGORY'
 
@@ -13,9 +14,9 @@ module.exports = {
 				throw error
 			}
 		},
-		category: async(_, { categoryId }) => {
+		category: async(_, { productID }) => {
 			try {
-				const category = await model.byID(categoryId)
+				const category = await model.byID(productID)
 				return category
 			}
 			catch(error) {
@@ -40,37 +41,10 @@ module.exports = {
 				throw error
 			}
 		},
-		newProducts: async(_, { categoryId }) => {
-			try {
-				const newProducts = await model.newProducts(categoryId)
-				return newProducts
-			}
-			catch(error) {
-				throw error
-			}
- 		},
- 		giftProducts: async(_, { categoryId }) => {
-			try {
-				const giftProducts = await model.giftProducts(categoryId)
-				return giftProducts
-			}
-			catch(error) {
-				throw error
-			}
- 		},
- 		newProductTitle: async(_, { categoryId }) => {
- 			try {
- 				const title = await model.newProductTitle(categoryId)
- 				return title
- 			}
- 			catch(error) {
- 				throw error
- 			}
- 		},
- 		giftProductTitle: async(_, { categoryId }) => {
- 			try {
- 				const title = await model.giftProductTitle(categoryId)
- 				return title
+ 		byCategoryID: async(_, { categoryID }) => {
+ 			try {	
+ 				const byCategoryID = await model.byCategoryID(categoryID)
+ 				return byCategoryID
  			}
  			catch(error) {
  				throw error
@@ -78,10 +52,10 @@ module.exports = {
  		}
 	},
 	Mutation: {
-		addCategory: async(_, { categoryName }) => {
+		addCategory: async(_, { categoryName, isNavbar, isPopular }) => {
 			try {
 				if(categoryName) {
-					const newCategory = await model.addCategory(categoryName)
+					const newCategory = await model.addCategory(categoryName, isNavbar, isPopular)
 					pubsub.publish(CATEGORY)
 
 					if(newCategory) {
@@ -123,9 +97,9 @@ module.exports = {
 				}
 			}
 		},
-		updateCategory: async(_, { categoryID, categoryName }) => {
+		updateCategory: async(_, { categoryID, categoryName, isNavbar, isPopular }) => {
 			try {
-				const updatedCategory = await model.updateCategory(categoryName, categoryID)
+				const updatedCategory = await model.updateCategory(categoryName, categoryID, isNavbar, isPopular)
 
 				if(updatedCategory) {
 					return {
@@ -146,6 +120,8 @@ module.exports = {
 	Categories: {
 		id: 	global => global.category_id,
 		name: 	global => global.category_name,
+		isNavbar: global => global.is_navbar,
+		isPopular: global => global.is_popular
 	},
 	Products: {
 		id: 			global => global.product_id,
@@ -156,6 +132,11 @@ module.exports = {
 	Title: {
 		id: 	global => global.title_id,
 		name: 	global => global.title_name
+	},
+	Modal: {
+		id: global => global.category_id,
+		name: global => global.category_name,
+		subcategory: async global => await subcategoryModel.modal(global.category_id)
 	},
 	Subscription: {
 		categories: {

@@ -21,6 +21,20 @@ const BY_ID = `
 		subcategory_id = $2
 `
 
+const BY_PRODUCT_ID = `
+	SELECT
+		s.subclass_id,
+		s.subclass_name,
+		p.product_id,
+		p.subclass_id
+	FROM 
+		sub_classes s
+	INNER JOIN
+		products p ON p.subclass_id = s.subclass_id
+	WHERE
+		p.product_id = $1
+`
+
 const BY_CATEGORY_ID = `
 	SELECT
 		subclass_id,
@@ -86,13 +100,18 @@ const SORTED_PRODUCTS = `
 		sub.subclass_id,
 		s.subcategory_name,
 		p.product_name,
-		p.product_price
+		p.product_price,
+		p.sale_amount,
+		i.product_id,
+		i.image_link
 	FROM
 		products p
 	INNER JOIN
 		sub_categories s ON p.subcategory_id = s.subcategory_id
 	INNER JOIN
 		sub_classes sub ON p.subclass_id = sub.subclass_id
+	INNER JOIN
+		product_images i ON i.product_id = p.product_id
 	WHERE
 		p.subclass_id = $1
 	ORDER BY
@@ -106,25 +125,14 @@ const SORTED_PRODUCTS = `
 	OFFSET $3 FETCH FIRST $4 ROW ONLY
 `
 
-const UNSORTED_PRODUCTS = `
+const SUB_CLASSES_BY_ID = `
 	SELECT
-		p.product_id,
-		p.subcategory_id,
-		p.subclass_id,
-		s.subcategory_id,
-		sub.subclass_id,
-		s.subcategory_name,
-		p.product_name,
-		p.product_price
+		subclass_id,
+		subclass_name
 	FROM
-		products p
-	INNER JOIN
-		sub_categories s ON p.subcategory_id = s.subcategory_id
-	INNER JOIN
-		sub_classes sub ON p.subclass_id = sub.subclass_id
+		sub_classes
 	WHERE
-		p.subclass_id = $1
-	OFFSET $2 FETCH FIRST $3 ROW ONLY
+		subcategory_id = $1
 `
 
 const all				= () 									=> fetchAll(ALL_SUB_CLASSES)
@@ -133,8 +141,10 @@ const addSubClass 		= (name, subcategoryID, categoryID) 	=> fetch(ADD_SUB_CLASS,
 const deleteSubclass 	= (subclassID) 							=> fetch(DELETE_SUB_CLASS, subclassID)
 const name 				= (subclassID) 							=> fetch(SUB_CLASS_NAME, subclassID)
 const link 				= (subclassID) 							=> fetch(SUB_CLASS_LINK, subclassID)
-const sorted 			= (subclassID, sortStatus, page, limit) => fetchAll(SORTED_PRODUCTS, subclassID, sortStatus, page, limit)
+const sorted 			= (subclassID, sortStatus, page, limit) => fetchAll(SORTED_PRODUCTS, subclassID, sortStatus, (page - 1) * limit, limit)
 const byCategory 		= (categoryID) 							=> fetchAll(BY_CATEGORY_ID, categoryID)
+const byproductID 		= (productID) 							=> fetch(BY_PRODUCT_ID, productID)
+const subclasses 		= (subcategoryID) 						=> fetchAll(SUB_CLASSES_BY_ID, subcategoryID)
 
 module.exports = {
 	all,
@@ -144,5 +154,7 @@ module.exports = {
 	name,
 	link,
 	sorted,
-	byCategory
+	byCategory,
+	byproductID,
+	subclasses
 }
