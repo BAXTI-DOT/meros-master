@@ -9,7 +9,6 @@ module.exports = {
 	},
 	Mutation: {
 		insertImage: async(_, { input: { id, url } }) => {
-			console.log(input)
 			try {
 				const newImage =  await model.newImage(url, id)
 
