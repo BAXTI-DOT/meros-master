@@ -3,9 +3,6 @@ const { gql } = require('apollo-server-express')
 module.exports = gql`
 	input ImageData {
 		id: ID!
-		name: String!
-		path: String!
-		mimetype: String!
 		url: String!
 	}
 

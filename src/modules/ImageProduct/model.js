@@ -12,8 +12,8 @@ const IMAGE_PRODUCTS = `
 
 const INSERT_IMAGE = `
 	INSERT INTO
-		product_images(image_link, image_path, mimetype, product_id, image_name)
-	VALUES($1, $2, $3, $4, $5)
+		product_images(image_link, product_id)
+	VALUES($1, $2)
 	RETURNING 
 		image_id
 `
@@ -32,7 +32,7 @@ const UPDATE_IMAGE = `
 `
 
 const image = (productID) => fetch(IMAGE_PRODUCTS, productID)
-const newImage = (url, path, mimetype, id, name) => fetch(INSERT_IMAGE, url, path, mimetype, id, name)
+const newImage = (url, id) => fetch(INSERT_IMAGE, url, id)
 const updateImage = (url, path, mimetype, name, imageID) => fetch(UPDATE_IMAGE, url, path, mimetype, name, imageID)
 
 module.exports = {

@@ -92,13 +92,19 @@ CREATE TABLE filter_details(
 	filtermain_id uuid not null references filters_main(filtermain_id) ON DELETE CASCADE
 );
 
+-- CREATE TABLE product_images(
+-- 	image_id uuid not null default uuid_generate_v4() primary key,
+-- 	image_link varchar(128) not null,
+-- 	image_path varchar(128) not null,
+-- 	mimetype varchar(128) not null,
+-- 	product_id uuid not null references products(product_id) ON DELETE CASCADE,
+-- 	image_name varchar(128) not null
+-- );
+
 CREATE TABLE product_images(
 	image_id uuid not null default uuid_generate_v4() primary key,
-	image_link varchar(128) not null,
-	image_path varchar(128) not null,
-	mimetype varchar(128) not null,
-	product_id uuid not null references products(product_id) ON DELETE CASCADE,
-	image_name varchar(128) not null
+	image_link varchar(256) not null,
+	product_id uuid not null references products (product_id) ON DELETE CASCADE
 );
 
 CREATE TABLE filtered (
