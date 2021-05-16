@@ -7,6 +7,7 @@ const Filter = require('./routes/filter')
 const ProductFilter = require('./routes/product-filter')
 const CART = require('./routes/cart/cart')
 const ORDER = require('./routes/order/order')
+const PRODUCT = require('./routes/product/product')
 
 router
 	.post('/uploadFile', Upload.POST_ON_CHANGE)
@@ -22,5 +23,6 @@ router
 	.post('/updateMinus', CART.UPDATE_MINUS)
 	.post('/deleteCart', CART.DELETE_CART)
 	.post('/new-order', ORDER.POST)
+	.post('/new-product', PRODUCT.CREATE_PRODUCT)
 
 module.exports = router
