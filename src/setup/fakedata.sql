@@ -239,15 +239,15 @@ INSERT INTO regions(
 	region_name,
 	state_id
 )
-VALUES('Shayxontohur', 'bbac33cb-33f8-4d84-a789-0a491e880056'),
-	  ('Chilonzor', 'bbac33cb-33f8-4d84-a789-0a491e880056'),
-	  ('Olmazor', 'bbac33cb-33f8-4d84-a789-0a491e880056'),
-	  ('Kattaqorgon', '1a481558-ecfe-4fff-b2f8-4e67afbf48ab'),
-	  ('Bulungur', '1a481558-ecfe-4fff-b2f8-4e67afbf48ab'),
-	  ('Mirbozor', '1a481558-ecfe-4fff-b2f8-4e67afbf48ab'),
-	  ('Vobkent', 'a01bc32b-2f5b-4f37-a050-d5029ba7cc73'),
-	  ('Rometan', 'a01bc32b-2f5b-4f37-a050-d5029ba7cc73'),
-	  ('Olot', 'a01bc32b-2f5b-4f37-a050-d5029ba7cc73');
+VALUES('Shayxontohur', '71733cc4-8633-44fa-a94a-8f3a3bef48fe'),
+	  ('Chilonzor', '71733cc4-8633-44fa-a94a-8f3a3bef48fe'),
+	  ('Olmazor', '71733cc4-8633-44fa-a94a-8f3a3bef48fe'),
+	  ('Kattaqorgon', '6dc17d32-63db-4a97-87d4-c381360713ad'),
+	  ('Bulungur', '6dc17d32-63db-4a97-87d4-c381360713ad'),
+	  ('Mirbozor', '6dc17d32-63db-4a97-87d4-c381360713ad'),
+	  ('Vobkent', '2e3cd4be-cf20-43a3-846a-bb4c136a5539'),
+	  ('Rometan', '2e3cd4be-cf20-43a3-846a-bb4c136a5539'),
+	  ('Olot', '2e3cd4be-cf20-43a3-846a-bb4c136a5539');
 
 INSERT INTO comments(
 	comment_body,
