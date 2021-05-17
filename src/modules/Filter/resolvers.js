@@ -23,6 +23,44 @@ module.exports = {
 			}
 		}
 	},
+	Mutation: {
+		createFilter: async(_, { title, subcategoryID }) => {
+			try {	
+				const newFilter = await model.newFilter(title, subcategoryID)
+
+				if(newFilter) {
+					return {
+						status: 200,
+						message: "Success"
+					}
+				}
+			}
+			catch(error) {
+				return {
+					status: 400,
+					message: new Error(error) || error.message
+				}
+			}
+		},
+		deleteFilter: async(_, { filterID }) => {
+			try {	
+				const deletedFilter = await model.deletefilter(filterID)
+
+				if(deletedFilter) {
+					return {
+						status: 200,
+						message: "Success delete"
+					}
+				}
+			}
+			catch(error) {
+				return {
+					status: 400,
+					message: new Error(error) || error.message
+				}
+			}
+		}
+	},
 	Filter: {
 		id: 	global => global.filtermain_id,
 		name: 	global => global.filtermain_title,

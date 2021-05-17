@@ -29,6 +29,17 @@ const NEW_IMAGE = `
 		image_id
 `
 
+const NEW_FILTERED = `
+	INSERT INTO
+		filtered(product_id, filter_id)
+	VALUES 
+		($1, $2)
+	RETURNING 
+		filtered_id
+`
+
+const newFiltered = (productID, filterID) => fetch(NEW_FILTERED, productID, filterID)
+
 const newProduct = (data) => fetch(
 	NEW_PRODUCT, 
 	data.name, 
@@ -50,5 +61,6 @@ const newImage = (url, productID) => fetch(NEW_IMAGE, url, productID)
 
 module.exports = {
 	newProduct,
-	newImage
+	newImage,
+	newFiltered
 }

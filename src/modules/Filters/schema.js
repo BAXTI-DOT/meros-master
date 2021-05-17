@@ -7,8 +7,11 @@ module.exports = gql`
 		name: String!
 	}
 
-
 	extend type Query {
 		filterDetails(filterID: ID!): [ Filters ]
+	}
+
+	extend type Mutation {
+		newDetail(title: String! filterID: ID!): Data!
 	}
 `

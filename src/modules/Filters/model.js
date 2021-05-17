@@ -33,10 +33,19 @@ const OLD_DETAILS = `
 		m.filtermain_id = $2
 `
 
-const filterDetail 	= (filterID) 	=> fetchAll(FILTER_DETAILS, filterID)
+const CREATE_DETAIL = `
+	INSERT INTO
+		filter_details(filterdetail_title, filtermain_id)
+	VALUES($1, $2)
+	RETURNING *
+`
+
+const filterDetail 	= (filterID) 				=> fetchAll(FILTER_DETAILS, filterID)
 const oldDetails 	= (productID, filterID) 	=> fetchAll(OLD_DETAILS, productID, filterID)
+const newDetail 	= (title, filterID) 		=> fetch(CREATE_DETAIL, title, filterID)
 
 module.exports = {
 	filterDetail,
-	oldDetails
+	oldDetails,
+	newDetail
 }

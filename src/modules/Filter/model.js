@@ -10,6 +10,21 @@ const FILTERS = `
 		subcategory_id = $1
 `
 
+const NEW_FILTER = `
+	INSERT INTO
+		filters_main(filtermain_title, subcategory_id)
+	VALUES($1, $2)
+	RETURNING *
+`
+
+const DELETE_FILTER = `
+	DELETE FROM
+		filters_main
+	WHERE
+		filtermain_id = $1
+	RETURNING *
+`
+
 const EDIT_FILTERS = `
 	SELECT
 		m.filtermain_title,
@@ -31,10 +46,14 @@ const EDIT_FILTERS = `
 		f.product_id = $1
 `
 
-const filters 		= (subcategoryID) 	=> fetchAll(FILTERS, subcategoryID)
-const editFilters 	= (productID) 		=> fetchAll(EDIT_FILTERS, productID)
+const filters 		= (subcategoryID) 			=> fetchAll(FILTERS, subcategoryID)
+const editFilters 	= (productID) 				=> fetchAll(EDIT_FILTERS, productID)
+const newFilter 	= (title, subcategoryID) 	=> fetch(NEW_FILTER, title, subcategoryID)
+const deletefilter 	= (filterID) 				=> fetch(DELETE_FILTER, filterID)
 
 module.exports = {
 	filters,
-	editFilters
+	editFilters,
+	newFilter,
+	deletefilter
 }

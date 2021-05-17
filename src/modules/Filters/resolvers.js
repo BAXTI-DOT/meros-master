@@ -21,6 +21,26 @@ module.exports = {
 			}
 		}
 	},
+	Mutation: {
+		newDetail: async(_, { title, filterID }) => {
+			try {	
+				const newDetail = await model.newDetail(title, filterID)
+
+				if(newDetail) {
+					return {
+						status: 200,
+						message: "Success insert"
+					}
+				}
+			}
+			catch(error) {
+				return {
+					status: 400,
+					message: new Error(error) || error.message
+				}
+			}
+		}
+	},
 	Filters: {
 		id: global => global.filterdetail_id,
 		name: global => global.filterdetail_title

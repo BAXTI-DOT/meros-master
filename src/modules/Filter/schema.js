@@ -13,4 +13,9 @@ module.exports = gql`
 		filters(subcategoryID: ID!): [ Filter ]
 		editFilters(productID: ID!): [ Filter ]
 	}
+
+	extend type Mutation {
+		createFilter(title: String! subcategoryID: ID!): Data
+		deleteFilter(filterID: ID!): Data
+	}
 `
