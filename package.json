@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/BAXTI-DOT/meros-master#readme",
   "dependencies": {
-    "apollo-server-express": "^2.22.2",
+    "apollo-server-express": "^2.25.4",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
